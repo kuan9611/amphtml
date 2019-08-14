@@ -1,0 +1,120 @@
+<!--
+  ## Introduction
+
+  The [`amp-list`]({{g.doc('/content/amp-dev/documentation/components/reference/amp-list.md', locale=doc.locale).url.path}}) enables client-side rendering in AMP. Content can either be fetched from a JSON endpoint or locally from `amp-state`.
+-->
+<!-- -->
+<!doctype html>
+<html ⚡>
+<head>
+  <meta charset="utf-8">
+  <title>amp-list</title>
+  <script async src="https://cdn.ampproject.org/v0.js"></script>
+  <!-- ## Setup -->
+  <!-- Import the `amp-list` component ... -->
+  <script async custom-element="amp-list" src="https://cdn.ampproject.org/v0/amp-list-0.1.js"></script>
+  <!-- ... and the `amp-mustache` component in the header. -->
+  <script async custom-template="amp-mustache" src="https://cdn.ampproject.org/v0/amp-mustache-0.2.js"></script>
+  <!-- Import the `amp-bind` component for dynamically changing the content of an `amp-list`. -->
+  <script async custom-element="amp-bind" src="https://cdn.ampproject.org/v0/amp-bind-0.1.js"></script>
+  <link rel="canonical" href="https://amp.dev/documentation/examples/components/amp-list/index.html">
+  <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+  <style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
+  <style amp-custom>
+   :root {
+     --space-1: 0.5rem;
+     --space-2: 1rem;
+     --color-bg-light: #FAFAFC;
+     --color-primary: #005AF0;
+     --color-text-light: #fff;
+     --box-shadow-1: 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 1px -1px rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+   }
+
+  /* Position the overflow button in the top right corner */
+  .list-overflow {
+    width: max-content;
+    margin: var(--space-1);
+    margin-left: auto;
+    padding: var(--space-1);
+    color: var(--color-text-light);
+    background-color: var(--color-primary);
+  }
+
+  .product {
+    height: 100px;
+    max-width: 400px;
+    box-shadow: var(--box-shadow-1);
+    background: var(--color-bg-light);
+    border-radius: 2px;
+    margin: var(--space-1);
+    display: flex;
+    align-items: center;
+  }
+
+  .product amp-img {
+      margin-right: var(--space-2);
+  }
+
+  /* Skeleton placeholder loading animation */
+  [placeholder] .product {
+    background:
+      linear-gradient(90deg, rgba(211, 211, 211, 0) 0, rgba(211, 211, 211, 0.8) 50%, rgba(211, 211, 211, 0) 100%),
+      linear-gradient(#cccccc 100%, transparent 0),
+      linear-gradient(#cccccc 100%, transparent 0),
+      linear-gradient(#cccccc 100%, transparent 0),
+      linear-gradient(#cccccc 100%, transparent 0);
+    background-size:
+      200px 100px,
+      150px 100px,
+      100px 10px,
+      100px 10px,
+      100px 10px;
+    background-position:
+      -150% 0, 0 0,
+      166px 16px,
+      166px 36px,
+      166px 56px;
+    background-repeat: no-repeat;
+    animation: loading 1.5s infinite;
+    -webkit-animation: loading 1.5s infinite;
+  }
+
+  @-webkit-keyframes loading {
+    to {
+      background-position: 350% 0, 0 0,
+        166px 16px,
+        166px 36px,
+        166px 56px;
+    }
+  }
+
+  @keyframes loading {
+    to {
+      background-position: 350% 0, 0 0,
+        166px 16px,
+        166px 36px,
+        166px 56px;
+    }
+  }
+  </style>
+</head>
+<body>
+
+  <!-- ## Handling list overflow -->
+  <!--
+   If the `amp-list` content requires more space than available, the AMP runtime will display the overflow element (if specified).
+  -->
+  <amp-list layout="fixed-height" height="48"
+    src="https://amp.dev/static/samples/json/examples.json"
+    binding="no">
+    <div overflow role="button" aria-label="Show more" class="list-overflow">
+      Show more
+    </div>
+    <template type="amp-mustache">
+      <div><a href="{{url}}">{{title}}</a></div>
+    </template>
+  </amp-list>
+  <amp-img width="auto" height="100" layout="fixed-height"></div>
+
+</body>
+</html>
