@@ -770,8 +770,8 @@ exports.extensionBundles = [
   },
   {
     name: 'amp-sidebar',
-    version: '0.1',
-    latestVersion: '0.1',
+    version: ['0.1', '1.0'],
+    latestVersion: '1.0',
     options: {hasCss: true},
     type: TYPES.MISC,
   },

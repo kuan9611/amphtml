@@ -39,10 +39,10 @@
 
 .i-amphtml-sidebar-counteract {
   width: 100%;
+  height: 100vh;
 }
 
 .i-amphtml-sidebar-move {
-  position: absolute;
   width: 100%;
 }
 
@@ -54,6 +54,7 @@ amp-sidebar[open-style="overlay"] {
   z-index: 2147483647;
 }
 
+amp-sidebar,
 .i-amphtml-sidebar-move,
 .i-amphtml-sidebar-counteract,
 .i-amphtml-sidebar-mask,
@@ -61,17 +62,22 @@ amp-sidebar[open-style="overlay"] {
   transition: 1000ms transform cubic-bezier(0,0,.21,1), 1000ms box-shadow, 1000ms opacity;
 }
 
+[open-style="push"][i-amphtml-sidebar-state="opening"],
+[open-style="push"][i-amphtml-sidebar-state="opened"] {
+  transform: translateX(calc(var(--amp-sidebar-width) * (1 - var(--swipe-fraction, 0))));
+}
+
 [open-style="push"] .i-amphtml-sidebar-move {
   transform: translateX(calc(var(--amp-sidebar-push-ratio) * 100%));
 }
 
-[open-style="push"] .i-amphtml-sidebar-counteract {
-  overflow: hidden;
+[open-style="push"][i-amphtml-sidebar-state="opening"] .i-amphtml-sidebar-move,
+[open-style="push"][i-amphtml-sidebar-state="opened"] .i-amphtml-sidebar-move {
+  transform: translateX(calc(100% * (1 - var(--amp-sidebar-push-ratio) * var(--swipe-fraction, 0))));
 }
 
-[open-style="push"][i-amphtml-sidebar-state="opening"],
-[open-style="push"][i-amphtml-sidebar-state="opened"] {
-  transform: translateX(calc(var(--amp-sidebar-width) * (1 - var(--swipe-fraction, 0))));
+amp-sidebar[open-style="push"] {
+  transform: translateX(-100%) !important;
 }
 
 [i-amphtml-sidebar-state="opened"],
@@ -97,7 +103,7 @@ amp-sidebar[side="left"][open][open-style="push"] .i-amphtml-sidebar-counteract 
 }
 
 /** TODO: mask element for push state */
-[open-style="push"] .i-amphtml-sidebar-mask {
+.i-amphtml-sidebar-mask[open-style="push"] {
   transform: none !important;
   background-color: rgba(0, 0, 0, 0);
 }
@@ -105,7 +111,11 @@ amp-sidebar[side="left"][open][open-style="push"] .i-amphtml-sidebar-counteract 
 /** Push, over */
 
 /** Overlay */
-amp-sidebar[side="left"][open][open-style="overlay"] .i-amphtml-sidebar-move {
+amp-sidebar[side="left"][open-style="overlay"] .i-amphtml-sidebar-move {
+  transform: none;
+}
+
+amp-sidebar[open-style="overlay"][open] {
   transform: translateX(calc(-100% * var(--swipe-fraction, 0)));
 }
 

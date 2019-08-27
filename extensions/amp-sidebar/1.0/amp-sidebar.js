@@ -215,9 +215,6 @@ export class AmpSidebar extends AMP.BaseElement {
         '--amp-sidebar-width': `${this.moveElement_.offsetWidth}px`,
       });
     });
-    setImportantStyles(this.element, {
-      '--sidebar-width': `${this.element.offsetWidth}px`,
-    });
     this.setUpdateFn_(() => this.updateForOpened_(), ANIMATION_TIMEOUT);
     handleAutoscroll(this.getAmpDoc(), this.element);
   }
@@ -280,6 +277,7 @@ export class AmpSidebar extends AMP.BaseElement {
         .getRootNode()
         .querySelectorAll(this.element.getAttribute('notify-selector'))
     ).concat([
+      this.element,
       this.getMaskElement_(),
       this.moveElement_,
       this.counteractElement_,
