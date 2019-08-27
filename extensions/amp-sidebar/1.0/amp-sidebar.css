@@ -21,32 +21,47 @@
  amp-sidebar {
   --story-page-vh: 1vh;
   position: fixed !important;
+  max-width: 80vw;
   top: 0;
+  z-index: 2147483647;
+ }
+
+ amp-sidebar[side="left"] {
   left: 0;
   transform: translateX(-100%);
+ }
+
+ amp-sidebar[side="right"] {
+  right: 0;
+  transform: translateX(100%);
+ }
+
+.i-amphtml-sidebar-container {
   max-height: 100vh !important;
   height: 100vh;
-  max-width: 80vw;
+  width: 100%;
   background-color: #efefef;
   min-width: 45px !important;
   outline: none;
   overflow-x: hidden !important;
   overflow-y: auto !important;
-  z-index: 2147483647;
   -webkit-overflow-scrolling: touch;
   will-change: transform;
- }
-
-.i-amphtml-sidebar-counteract {
-  width: 100%;
-  height: 100vh;
 }
 
-.i-amphtml-sidebar-move {
+[side="left"] .i-amphtml-sidebar-container[open-style="push"] {
+  box-shadow: inset -10px 0 10px -10px rgba(0, 0, 0, 0.5);
+}
+
+[side="right"] .i-amphtml-sidebar-container[open-style="push"] {
+  box-shadow: inset 10px 0 10px -10px rgba(0, 0, 0, 0.5);
+}
+
+.i-amphtml-sidebar-content {
   width: 100%;
 }
 
-amp-sidebar[open-style="push"] .i-amphtml-sidebar-move {
+amp-sidebar[open-style="push"] .i-amphtml-sidebar-content {
   z-index: -1;
 }
 
@@ -54,30 +69,36 @@ amp-sidebar[open-style="overlay"] {
   z-index: 2147483647;
 }
 
-amp-sidebar,
-.i-amphtml-sidebar-move,
-.i-amphtml-sidebar-counteract,
-.i-amphtml-sidebar-mask,
 [i-amphtml-sidebar-state] {
   transition: 1000ms transform cubic-bezier(0,0,.21,1), 1000ms box-shadow, 1000ms opacity;
 }
 
-[open-style="push"][i-amphtml-sidebar-state="opening"],
-[open-style="push"][i-amphtml-sidebar-state="opened"] {
+[side="left"][open-style="push"][i-amphtml-sidebar-state="opening"],
+[side="left"][open-style="push"][i-amphtml-sidebar-state="opened"] {
   transform: translateX(calc(var(--amp-sidebar-width) * (1 - var(--swipe-fraction, 0))));
 }
 
-[open-style="push"] .i-amphtml-sidebar-move {
+[side="left"][open-style="push"] .i-amphtml-sidebar-content {
   transform: translateX(calc(var(--amp-sidebar-push-ratio) * 100%));
 }
 
-[open-style="push"][i-amphtml-sidebar-state="opening"] .i-amphtml-sidebar-move,
-[open-style="push"][i-amphtml-sidebar-state="opened"] .i-amphtml-sidebar-move {
-  transform: translateX(calc(100% * (1 - var(--amp-sidebar-push-ratio) * var(--swipe-fraction, 0))));
+[side="left"][open-style="push"][i-amphtml-sidebar-state="opening"] .i-amphtml-sidebar-content,
+[side="left"][open-style="push"][i-amphtml-sidebar-state="opened"] .i-amphtml-sidebar-content {
+  transform: translateX(calc(100% * var(--amp-sidebar-push-ratio) * var(--swipe-fraction, 0)));
 }
 
-amp-sidebar[open-style="push"] {
-  transform: translateX(-100%) !important;
+[side="right"][open-style="push"][i-amphtml-sidebar-state="opening"],
+[side="right"][open-style="push"][i-amphtml-sidebar-state="opened"] {
+  transform: translateX(calc(-1 * var(--amp-sidebar-width) * (1 - var(--swipe-fraction, 0))));
+}
+
+[side="right"][open-style="push"] .i-amphtml-sidebar-content {
+  transform: translateX(calc(var(--amp-sidebar-push-ratio) * -100%));
+}
+
+[side="right"][open-style="push"][i-amphtml-sidebar-state="opening"] .i-amphtml-sidebar-content,
+[side="right"][open-style="push"][i-amphtml-sidebar-state="opened"] .i-amphtml-sidebar-content {
+  transform: translateX(calc(-100% * var(--amp-sidebar-push-ratio) * var(--swipe-fraction, 0)));
 }
 
 [i-amphtml-sidebar-state="opened"],
@@ -98,8 +119,16 @@ amp-sidebar[open-style="push"] {
   z-index: 2147483646;
 }
 
-amp-sidebar[side="left"][open][open-style="push"] .i-amphtml-sidebar-counteract {
-  transform: translateX(calc(-1 * var(--amp-sidebar-width) * (1 - var(--swipe-fraction, 0))));
+[side="left"] .i-amphtml-sidebar-container[open-style="push"][i-amphtml-sidebar-state="opening"],
+[side="left"] .i-amphtml-sidebar-container[open-style="push"][i-amphtml-sidebar-state="opened"] {
+  transform: none !important;
+  box-shadow: inset -10px 0 10px -10px rgba(0, 0, 0, calc(0.5 * var(--swipe-fraction, 0)));
+}
+
+[side="right"] .i-amphtml-sidebar-container[open-style="push"][i-amphtml-sidebar-state="opening"],
+[side="right"] .i-amphtml-sidebar-container[open-style="push"][i-amphtml-sidebar-state="opened"] {
+  transform: none !important;
+  box-shadow: inset 10px 0 10px -10px rgba(0, 0, 0, calc(0.5 * var(--swipe-fraction, 0)));
 }
 
 /** TODO: mask element for push state */
@@ -111,16 +140,18 @@ amp-sidebar[side="left"][open][open-style="push"] .i-amphtml-sidebar-counteract 
 /** Push, over */
 
 /** Overlay */
-amp-sidebar[side="left"][open-style="overlay"] .i-amphtml-sidebar-move {
-  transform: none;
+.i-amphtml-sidebar-content[open-style="overlay"] {
+  transform: none !important;
 }
 
-amp-sidebar[open-style="overlay"][open] {
-  transform: translateX(calc(-100% * var(--swipe-fraction, 0)));
+.i-amphtml-sidebar-container[side="left"][open-style="overlay"][i-amphtml-sidebar-state="opening"],
+.i-amphtml-sidebar-container[side="left"][open-style="overlay"][i-amphtml-sidebar-state="opened"] {
+  transform: translateX(calc(100% * (1 - var(--swipe-fraction, 0))));
 }
 
-.i-amphtml-sidebar-counteract[open-style="overlay"] {
-  transform: none;
+.i-amphtml-sidebar-container[side="right"][open-style="overlay"][i-amphtml-sidebar-state="opening"],
+.i-amphtml-sidebar-container[side="right"][open-style="overlay"][i-amphtml-sidebar-state="opened"] {
+  transform: translateX(calc(-100% * (1 - var(--swipe-fraction, 0))));
 }
 
 .i-amphtml-sidebar-mask[open-style="overlay"][i-amphtml-sidebar-state="opening"],

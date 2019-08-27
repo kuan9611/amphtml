@@ -10,6 +10,7 @@
   <script async custom-element="amp-lightbox-gallery" src="https://cdn.ampproject.org/v0/amp-lightbox-gallery-0.1.js"></script>
   <script async custom-element="amp-auto-lightbox" src="https://cdn.ampproject.org/v0/amp-auto-lightbox-0.1.js"></script>
   <script async custom-element="amp-sidebar" src="https://cdn.ampproject.org/v0/amp-sidebar-1.0.js"></script>
+  <script async custom-element="amp-bind" src="https://cdn.ampproject.org/v0/amp-bind-0.1.js"></script>
   <script async custom-element="amp-image-viewer" src="https://cdn.ampproject.org/v0/amp-image-viewer-0.1.js"></script>
   <script async custom-element="amp-carousel" src="https://cdn.ampproject.org/v0/amp-carousel-0.1.js"></script>
   <style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
@@ -39,13 +40,42 @@
     font-size: 48px;
   }
 
-  :root {
+  body {
+    text-align: center;
+  }
+
+  .c0 {
+    --amp-sidebar-push-ratio: 0.0;
+  }
+  .c1 {
+    --amp-sidebar-push-ratio: 0.3;
+  }
+  .c2 {
     --amp-sidebar-push-ratio: 0.5;
+  }
+  .c3 {
+    --amp-sidebar-push-ratio: 0.7;
+  }
+
+  select {
+    font-size: 18px;
+  }
+
+  button {
+    width: 40%;
+    font-size: 18px;
+    margin: 0;
+  }
+
+  p {
+    margin-top: 0;
+    padding-top: 10px;
   }
 </style>
 </head>
 <body>
-  <amp-sidebar id="sidebar1" layout="nodisplay" side="left" notify-selector="body" open-style="push" style="width:600px">
+  <amp-sidebar id="sidebar1" [class]="myclass"
+  layout="nodisplay" side="left" notify-selector="body" open-style="push" style="width:600px">
     <ul>
       <li>Nav item</li>
       <li>Nav item</li>
@@ -62,7 +92,36 @@
     </ul>
   </amp-sidebar>
   
-  <amp-sidebar id="sidebar2" layout="nodisplay" side="left" open-style="overlay" style="width:600px">
+  <amp-sidebar id="sidebar2" [class]="myclass"
+  layout="nodisplay" side="right" notify-selector="body" open-style="push" style="width:600px">
+      <ul>
+        <li>Nav item 1</li>
+        <li><a href="#idTwo" on="tap:idTwo.scrollTo">Nav item 2</a></li>
+        <li>Nav item 3</li>
+        <li><a href="#idFour" on="tap:idFour.scrollTo">Nav item 4</a></li>
+      <li>Nav item 5</li>
+      <li>Nav item 6</li>
+    </ul>
+  </amp-sidebar>
+
+  <amp-sidebar id="sidebar3" layout="nodisplay" side="left" open-style="overlay" style="width:600px">
+    <ul>
+      <li>Nav item</li>
+      <li>Nav item</li>
+      <li>Nav item</li>
+      <li>Nav item</li>
+      <li>Nav item</li>
+      <li>Nav item</li>
+      <li>Nav item</li>
+      <li>Nav item</li>
+      <li>Nav item</li>
+      <li>Nav item</li>
+      <li>Nav item</li>
+      <li>Nav item</li>
+    </ul>
+  </amp-sidebar>
+  
+  <amp-sidebar id="sidebar4" layout="nodisplay" side="right" open-style="overlay" style="width:600px">
       <ul>
         <li>Nav item 1</li>
         <li><a href="#idTwo" on="tap:idTwo.scrollTo">Nav item 2</a></li>
@@ -74,8 +133,27 @@
   </amp-sidebar>
 
   <main>
-    <button on='tap:sidebar1.toggle'>toggle push sidebar</button>
-    <button on='tap:sidebar2.toggle'>toggle overlay sidebar</button>
+    <p>Sidebar options:</p>
+    <button on='tap:sidebar1.toggle'>left push</button>
+    <button on='tap:sidebar2.toggle'>right push</button>
+    <button on='tap:sidebar3.toggle'>left overlay</button>
+    <button on='tap:sidebar4.toggle'>right overlay</button>
+
+    <amp-state id="states">
+      <script type="application/json">
+        {
+          "myclass":"c2"
+        }
+      </script>
+    </amp-state>
+
+    <p>Sidebar content push ratio:</p>
+    <select on="input-debounced:AMP.setState({myclass: event.value})"> 
+      <option value="c0" [selected]="myclass=='c0'">1.0</option> 
+      <option value="c1" [selected]="myclass=='c1'">0.7</option>
+      <option value="c2" selected [selected]="myclass=='c2'">0.5</option>
+      <option value="c3" [selected]="myclass=='c3'">0.3</option>
+    </select>
 
     <div>
       <amp-img src="https://picsum.photos/id/10/2500/1667" width="150" height="100" layout="responsive" lightbox></amp-img>

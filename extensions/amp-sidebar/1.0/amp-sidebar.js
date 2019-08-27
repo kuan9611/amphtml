@@ -39,8 +39,8 @@ const ANIMATION_TIMEOUT = 1000;
 
 /** @private @enum {string} */
 const Side = {
-  START: 'start',
-  END: 'end',
+  LEFT: 'left',
+  RIGHT: 'right',
 };
 
 /**  @enum {string} */
@@ -112,15 +112,15 @@ export class AmpSidebar extends AMP.BaseElement {
     const {element} = this;
 
     const html = htmlFor(this.element);
-    this.contents = html`
-      <div class="i-amphtml-sidebar-counteract">
-        <div class="i-amphtml-sidebar-move"></div>
+    this.containerElement_ = html`
+      <div class="i-amphtml-sidebar-container">
+        <div class="i-amphtml-sidebar-content"></div>
       </div>
     `;
 
-    this.moveElement_ = this.contents.querySelector('.i-amphtml-sidebar-move');
-
-    this.counteractElement_ = this.contents;
+    this.contentElement_ = this.containerElement_.querySelector(
+      '.i-amphtml-sidebar-content'
+    );
 
     // element.classList.add('i-amphtml-overlay');
     // element.classList.add('i-amphtml-scrollable');
@@ -128,14 +128,14 @@ export class AmpSidebar extends AMP.BaseElement {
     const side = element.getAttribute('side');
 
     this.getRealChildNodes().forEach(child => {
-      this.moveElement_.appendChild(child);
+      this.contentElement_.appendChild(child);
     });
 
-    this.element.appendChild(this.contents);
+    this.element.appendChild(this.containerElement_);
 
-    this.isRight_ = (side == Side.END) != isRTL(this.document_);
+    this.isRight_ = (side == Side.RIGHT) != isRTL(this.document_);
 
-    this.moveElement_.setAttribute('side', this.isRight_ ? 'right' : 'left');
+    this.contentElement_.setAttribute('side', this.isRight_ ? 'right' : 'left');
 
     // this.mainElement_ = this.getAmpDoc()
     //   .getBody()
@@ -212,7 +212,7 @@ export class AmpSidebar extends AMP.BaseElement {
     this.notifyElements_.forEach(element => {
       element.setAttribute('i-amphtml-sidebar-state', 'opening');
       setImportantStyles(element, {
-        '--amp-sidebar-width': `${this.moveElement_.offsetWidth}px`,
+        '--amp-sidebar-width': `${this.contentElement_.offsetWidth}px`,
       });
     });
     this.setUpdateFn_(() => this.updateForOpened_(), ANIMATION_TIMEOUT);
@@ -224,7 +224,7 @@ export class AmpSidebar extends AMP.BaseElement {
    */
   updateForOpened_() {
     // On open sidebar
-    const children = toArray(this.moveElement_.children);
+    const children = toArray(this.contentElement_.children);
     const owners = Services.ownersForDoc(this.element);
     owners.scheduleLayout(this.element, children);
     owners.scheduleResume(this.element, children);
@@ -277,16 +277,16 @@ export class AmpSidebar extends AMP.BaseElement {
         .getRootNode()
         .querySelectorAll(this.element.getAttribute('notify-selector'))
     ).concat([
-      this.element,
+      this.contentElement_,
+      this.containerElement_,
       this.getMaskElement_(),
-      this.moveElement_,
-      this.counteractElement_,
     ]);
     this.notifyElements_.forEach(element => {
       element.setAttribute(
         'open-style',
         this.element.getAttribute('open-style')
       );
+      element.setAttribute('side', this.element.getAttribute('side'));
     });
 
     this.viewport_.enterOverlayMode();
@@ -379,8 +379,7 @@ export class AmpSidebar extends AMP.BaseElement {
     if (data.first) {
       this.swipeToDismiss_.startSwipe({
         swipeElements: this.notifyElements_,
-        direction:
-          this.side_ == Side.LEFT ? Direction.BACKWARD : Direction.FORWARD,
+        direction: this.isRight_ ? Direction.FORWARD : Direction.BACKWARD,
         orientation: Orientation.HORIZONTAL,
       });
       return;
