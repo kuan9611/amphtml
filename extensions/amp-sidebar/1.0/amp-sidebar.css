@@ -14,44 +14,36 @@
  * limitations under the License.
  */
 
+:root {
+  --amp-sidebar-push-ratio: 0.5;
+}
+
  amp-sidebar {
+  --story-page-vh: 1vh;
   position: fixed !important;
-  max-width: 80vw;
   top: 0;
   left: 0;
-  --amp-sidebar-push-ratio: 0.5;
- }
-
- amp-sidebar[open-style="push"] .i-amphtml-sidebar-crop {
-  box-shadow: inset -7px 0 9px -7px rgba(0, 0, 0, 0.5);
- }
-
-.i-amphtml-sidebar-crop {
-  max-width: 80vw;
-  height: 100vh;
-  overflow: hidden;
-}
-
-.i-amphtml-sidebar-counteract {
-  max-width: 80vw;
-}
-
-.i-amphtml-sidebar-move {
-  position: relative;
-  --story-page-vh: 1vh;
+  transform: translateX(-100%);
   max-height: 100vh !important;
   height: 100vh;
   max-width: 80vw;
-  width: 100%;
-  transform: translateX(-100%);
   background-color: #efefef;
   min-width: 45px !important;
   outline: none;
   overflow-x: hidden !important;
   overflow-y: auto !important;
+  z-index: 2147483647;
   -webkit-overflow-scrolling: touch;
   will-change: transform;
-  z-index: 2147483647;
+ }
+
+.i-amphtml-sidebar-counteract {
+  width: 100%;
+}
+
+.i-amphtml-sidebar-move {
+  position: absolute;
+  width: 100%;
 }
 
 amp-sidebar[open-style="push"] .i-amphtml-sidebar-move {
@@ -70,25 +62,16 @@ amp-sidebar[open-style="overlay"] {
 }
 
 [open-style="push"] .i-amphtml-sidebar-move {
-  transform: translateX(calc(var(--amp-sidebar-push-ratio) * -100%));
-}
-
-[open-style="push"] .i-amphtml-sidebar-crop { 
-  overflow: hidden;
-  transform: translateX(-100%);
+  transform: translateX(calc(var(--amp-sidebar-push-ratio) * 100%));
 }
 
 [open-style="push"] .i-amphtml-sidebar-counteract {
-  transform: translateX(100%);
+  overflow: hidden;
 }
 
 [open-style="push"][i-amphtml-sidebar-state="opening"],
 [open-style="push"][i-amphtml-sidebar-state="opened"] {
   transform: translateX(calc(var(--amp-sidebar-width) * (1 - var(--swipe-fraction, 0))));
-}
-
-[open-style="push"][i-amphtml-sidebar-state="opened"] .i-amphtml-sidebar-crop {
-  box-shadow: inset 0 0 0 0 rgba(0, 0, 0, 0.0);
 }
 
 [i-amphtml-sidebar-state="opened"],
@@ -109,13 +92,8 @@ amp-sidebar[open-style="overlay"] {
   z-index: 2147483646;
 }
 
-/** Push, under */
-amp-sidebar[side="left"][open][open-style="push"] .i-amphtml-sidebar-move {
-  transform: translateX(calc(-1 * var(--amp-sidebar-push-ratio) * var(--amp-sidebar-width) * var(--swipe-fraction, 0)));
-}
-
 amp-sidebar[side="left"][open][open-style="push"] .i-amphtml-sidebar-counteract {
-  transform: translateX(calc(100% - var(--amp-sidebar-width) * (1 - var(--swipe-fraction, 0))));
+  transform: translateX(calc(-1 * var(--amp-sidebar-width) * (1 - var(--swipe-fraction, 0))));
 }
 
 /** TODO: mask element for push state */
@@ -127,8 +105,7 @@ amp-sidebar[side="left"][open][open-style="push"] .i-amphtml-sidebar-counteract 
 /** Push, over */
 
 /** Overlay */
-amp-sidebar[side="left"][open][open-style="overlay"] .i-amphtml-sidebar-move,
-amp-sidebar[side="left"][open][open-style="overlay"] .i-amphtml-sidebar-crop {
+amp-sidebar[side="left"][open][open-style="overlay"] .i-amphtml-sidebar-move {
   transform: translateX(calc(-100% * var(--swipe-fraction, 0)));
 }
 

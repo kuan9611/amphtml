@@ -113,18 +113,14 @@ export class AmpSidebar extends AMP.BaseElement {
 
     const html = htmlFor(this.element);
     this.contents = html`
-      <div class="i-amphtml-sidebar-crop">
-        <div class="i-amphtml-sidebar-counteract">
-          <div class="i-amphtml-sidebar-move"></div>
-        </div>
+      <div class="i-amphtml-sidebar-counteract">
+        <div class="i-amphtml-sidebar-move"></div>
       </div>
     `;
 
     this.moveElement_ = this.contents.querySelector('.i-amphtml-sidebar-move');
 
-    this.counteractElement_ = this.contents.querySelector(
-      '.i-amphtml-sidebar-counteract'
-    );
+    this.counteractElement_ = this.contents;
 
     // element.classList.add('i-amphtml-overlay');
     // element.classList.add('i-amphtml-scrollable');
@@ -134,6 +130,7 @@ export class AmpSidebar extends AMP.BaseElement {
     this.getRealChildNodes().forEach(child => {
       this.moveElement_.appendChild(child);
     });
+
     this.element.appendChild(this.contents);
 
     this.isRight_ = (side == Side.END) != isRTL(this.document_);

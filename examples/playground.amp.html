@@ -1,0 +1,93 @@
+<!doctype html>
+<html ⚡>
+<head>
+  <meta charset="utf-8">
+  <title>amp-selector</title>
+  <link rel="canonical" href="https://amp.dev/documentation/examples/components/amp-selector/index.html">
+  <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+  <script async src="https://cdn.ampproject.org/v0.js"></script>
+  <script async src="https://cdn.ampproject.org/v0/amp-viewer-integration-0.1.js"></script>
+  <script async custom-element="amp-lightbox-gallery" src="https://cdn.ampproject.org/v0/amp-lightbox-gallery-0.1.js"></script>
+  <script async custom-element="amp-auto-lightbox" src="https://cdn.ampproject.org/v0/amp-auto-lightbox-0.1.js"></script>
+  <script async custom-element="amp-sidebar" src="https://cdn.ampproject.org/v0/amp-sidebar-1.0.js"></script>
+  <script async custom-element="amp-image-viewer" src="https://cdn.ampproject.org/v0/amp-image-viewer-0.1.js"></script>
+  <script async custom-element="amp-carousel" src="https://cdn.ampproject.org/v0/amp-carousel-0.1.js"></script>
+  <style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
+<style amp-custom>
+  .option {
+    display: inline-block;
+    margin: 4px;
+  }
+  
+
+  amp-selector [option][selected] {
+    outline: none;
+  }
+  
+  amp-selector [option]:focus {
+    outline: none;
+    filter: grayscale(0.4);
+    box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.2);
+  }
+
+  button {
+    margin: 20px;
+    padding: 20px;
+  }
+
+  li {
+    font-size: 48px;
+  }
+
+  :root {
+    --amp-sidebar-push-ratio: 1;
+  }
+</style>
+</head>
+<body>
+  <amp-sidebar id="sidebar1" layout="nodisplay" side="left" notify-selector="body" open-style="push" style="width:600px">
+    <ul>
+      <li>Nav item</li>
+      <li>Nav item</li>
+      <li>Nav item</li>
+      <li>Nav item</li>
+      <li>Nav item</li>
+      <li>Nav item</li>
+      <li>Nav item</li>
+      <li>Nav item</li>
+      <li>Nav item</li>
+      <li>Nav item</li>
+      <li>Nav item</li>
+      <li>Nav item</li>
+    </ul>
+  </amp-sidebar>
+  
+  <amp-sidebar id="sidebar2" layout="nodisplay" side="left" open-style="overlay" style="width:600px">
+      <ul>
+        <li>Nav item 1</li>
+        <li><a href="#idTwo" on="tap:idTwo.scrollTo">Nav item 2</a></li>
+        <li>Nav item 3</li>
+        <li><a href="#idFour" on="tap:idFour.scrollTo">Nav item 4</a></li>
+      <li>Nav item 5</li>
+      <li>Nav item 6</li>
+    </ul>
+  </amp-sidebar>
+
+  <main>
+    <button on='tap:sidebar1.toggle'>toggle push sidebar</button>
+    <button on='tap:sidebar2.toggle'>toggle overlay sidebar</button>
+
+    <div>
+      <amp-img src="https://picsum.photos/id/10/2500/1667" width="150" height="100" layout="responsive" lightbox></amp-img>
+      <amp-img src="https://picsum.photos/id/100/2500/1656" width="150" height="100" layout="responsive" lightbox></amp-img>
+      <amp-img src="https://picsum.photos/id/0/5616/3744" width="150" height="100" layout="responsive" lightbox></amp-img>
+    </div>
+  </main>
+
+  <!-- <amp-youtube
+    data-videoid="ScMzIvxBSi4"
+    layout="responsive"
+    width="480" height="270" dock></amp-youtube> -->
+
+</body>
+</html>
